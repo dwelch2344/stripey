@@ -15,6 +15,31 @@ app.listen(port, function(){
   console.log('CORS-enabled web server listening on port', port);
 });
 
+// Example Payload for creating a customer (AND CHARING)
+/*
+// HEADERS 
+{
+	"x-stripe-key": "STRIPE_SECRET_KEY_HERE",
+	"x-stripe-token": "STRIPE_TOKEN_FROM_STRIPE.JS_LIB"
+}
+
+
+// BODY
+{
+  "amount": 100,
+  "customer": {
+    "name": "Andre Kradolfer"
+  },
+  "description": "Test test",
+  "metadata": {
+    "foo": "bar"
+  }
+}
+
+*/
+
+
+
 function onCustomerPost(req, res, next){
 
 	var key = req.headers['x-stripe-key'];
