@@ -46,6 +46,11 @@ function onCustomerPost(req, res, next){
 	// the newly created customer's token
 	var token = req.headers['x-stripe-token'];
 
+	console.log('Attempting connection with stripe key', key);
+	console.log('Using token ', token);
+
+	
+
 	var stripe = Stripe(key);
 	stripe.customers.create({
 		description: req.body.customer.name,
@@ -61,7 +66,7 @@ function onCustomerPost(req, res, next){
 	}
 
 	function onComplete(){
-	  	res.json({
+	  	res.jsonp({
 	  		msg: 'This is CORS-enabled for all origins!',
 	  		body: req.body,
 	  		headers: req.headers
@@ -69,7 +74,7 @@ function onCustomerPost(req, res, next){
 	}
 
 	function onChargeComplete(chargeErr, charge, customer) {
-		if(err){
+		if(chargeErr){
 			return onError(chargeErr, 'We created a customer, but failed to charge them...');
 		}
 
@@ -87,8 +92,8 @@ function onCustomerPost(req, res, next){
 			currency: "usd",
 			customer: customer.id,			
 			amount: req.body.amount,
-			metadata: req.body.metadata
-			description: req.body.description,		
+			metadata: req.body.metadata,
+			description: req.body.description	
 		}, function(chargeErr, charge){
 			onChargeComplete(chargeErr, charge, customer);
 		});
